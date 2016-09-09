@@ -74,24 +74,38 @@ var gameBoard = [
 				[1,0,0,0,0,0,0,0,0,0]
 				]
 
+var hexDigits = new Array
+        ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f");
+
+//Function to convert hex format to a rgb color
+function rgb2hex(rgb) {
+    rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+    return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+}
+
+function hex(x) {
+    return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
+}
+var hitCount = 0;
+
 function fireTorpedo() {
-	var hitCount = 0;
-	var userInput = $("#battleship").val();
+	var userInput = $("#userInput").val();
 
-
-	var row = battleship.substring(0,1);
-	var column = battleship.substring(0,1);
-	var x = "D";
-	row = letterConversion[x];
-	var y = "D";
-	column = letterConversion[y];
-	var twoDimensionalArray = [ ["a", "b", "c"], ["d", "e", "f"], ["g", "h", "i"] ];
+	var row = userInput.substring(0,1).toUpperCase();
+	row = letterConversion[row];
+	var column = userInput.substring(1, 3) - 1;
 	var battleshipGuess = gameBoard[row][column];
-	var myDivString = "#s" + row + column;
+	var guessDiv = "#s" + row + column
+	var rgbHexColor = rgb2hex($(guessDiv).css("background-color"));
+	if( (rgbHexColor == "#f6f8f9") && battleshipGuess)
+	    hitCount += battleshipGuess;
+    if(battleshipGuess)
+        $(guessDiv).css("background-color", "red");
+    else
+        $(guessDiv).css("background-color", "yellow");
 
-
-	if(hitcount >16){
-		$("#instructions").text("YOU SUNK ALL MY BATTLESHIPS!");
+	if(hitCount > 16){
+		$("#instructions").text("YOU SANK ALL MY BATTLESHIPS!");
 	}
 
 }
