@@ -91,6 +91,9 @@ var hitCount = 0;
 function fireTorpedo() {
 	var userInput = $("#userInput").val();
 
+	var audio = new Audio('marker.mp3');
+audio.play();
+
 	var row = userInput.substring(0,1).toUpperCase();
 	row = letterConversion[row];
 	var column = userInput.substring(1, 3) - 1;
